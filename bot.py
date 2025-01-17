@@ -3,6 +3,7 @@ from telebot import types
 from main import rwControl, getStock, getNameFromMOEX
 from valid import Valid
 from config import botToken, dirStocks
+from setup import main as checkFileExist
 
 
 bot = telebot.TeleBot(botToken)
@@ -97,6 +98,7 @@ def getPriceStock(message, shortName, count, status):
     file.writeStocks(data)
 
 def main():
+    checkFileExist()
     bot.infinity_polling()
 
 if __name__ == '__main__':

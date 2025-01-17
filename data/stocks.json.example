@@ -1,0 +1,26 @@
+{
+    "tickets":["LKOH"],
+    "Stocks": [
+        {
+            "name": "Лукойл",
+            "stock": "LKOH",
+            "count": "2",
+            "buy_price": [
+                {
+                    "count": "1",
+                    "price": "7000"
+                }
+            ]
+        }
+    ],
+    "Crypto": [
+        {
+            "USDT": 1000
+        }
+    ],
+    "Currency": [
+        {
+            "RUB": "1000"
+        }
+    ]
+}

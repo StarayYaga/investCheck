@@ -4,6 +4,8 @@ import schedule
 import time
 import datetime
 from config import channelId, botToken, ownerId, dirStocks
+from setup import main as checkFileExist
+
 
 # {"name":"", "stock":"", "count":"", "buy_price":[{"count":"", "price":""}]}
 
@@ -40,7 +42,7 @@ def getDividendsPrice(shortName):
     return data
 
 def getCryptoPrice():
-    url = f"https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,BTC,XRP,RUB&tsyms=USD&api_key=INSERT-cf0ef631d331819030a8ee6cfed755341ee2ee5f5310db8ca3fbe634db7620a9"
+    url = f"https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,BTC,XMR,RUB&tsyms=USD&api_key=INSERT-cf0ef631d331819030a8ee6cfed755341ee2ee5f5310db8ca3fbe634db7620a9"
     req = requests.get(url).json()
     return req
 
@@ -64,7 +66,7 @@ def cryptocurrency(file):
 USDT/RUB - ₽{round(1/float(data["RUB"]["USD"]), 2)}
 BTC/USDT - ${data["BTC"]["USD"]}
 ETH/USDT - ${data["ETH"]["USD"]}
-XRP/USDT - ${data["XRP"]["USD"]}
+XMR/USDT - ${data["XMR"]["USD"]}
 """
 
 def customRound(data):
@@ -120,7 +122,7 @@ def totalCapital(file, year):
             "total_divs": customRound(total_divs),
         })
     
-    return [data, price_now_total, total_price, divs, text, float(file.readStocks()["Currency"][0]["RUB"])]
+    return [data, price_now_total, total_price, divs*87/100, text, float(file.readStocks()["Currency"][0]["RUB"])]
 
 
 def main():
@@ -129,7 +131,7 @@ def main():
     text ='Состав портфеля\n\n'
     text += data[4] + cryptocurrency(file)
     text += f"\n\nЦена портфеля сейчас: {customRound(data[1])}  {customRound(((data[1]-data[2])/data[2])*100)}%\nЦена покупки портфеля: {customRound(data[2])}"
-    text += f"\nДивиденды за {year} год: {data[3]}р {customRound(data[3]/data[1]*100)}%"
+    text += f"\nДивиденды за {year} год: {customRound(data[3])}р {customRound(((data[3])/data[1]*100))}%"
     text += f"\nСвободные средства: {customRound(data[-1])}"
     send_text(text, ownerId, botToken)
     send_text(text, channelId, botToken)
@@ -142,13 +144,12 @@ def getStock():
     text ='Состав портфеля\n\n'
     text += data[4] + cryptocurrency(file)
     text += f"\n\nЦена портфеля сейчас: {customRound(data[1])}  {customRound(((data[1]-data[2])/data[2])*100)}%\nЦена покупки портфеля: {customRound(data[2])}"
-    text += f"\nДивиденды за {year} год: {data[3]}р {customRound(data[3]/data[1]*100)}%"
+    text += f"\nДивиденды за {year} год: {customRound(data[3])}р {customRound(((data[3])/data[1]*100))}%"
     text += f"\nСвободные средства: {customRound(data[-1])}"
     return text
 
-# getNameFromMOEX('MAGN')
-
 if __name__ == '__main__':
+    checkFileExist()
     main()
     print("start")
 
