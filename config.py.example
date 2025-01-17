@@ -1,0 +1,4 @@
+ownerId=1234567
+botToken="123243:qwertyuiop"
+channelId="-1001234567890"
+dirStocks="data/stocks.json"

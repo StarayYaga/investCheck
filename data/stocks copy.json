@@ -1,0 +1,50 @@
+{
+    "Stocks":[
+        {"name":"Сбер Банк", "stock":"SBER", 
+            "buy_price":[{"count":"10", "price":"235"}, {"count":"10", "price":"241.7"}]
+        },
+        {"name":"Лукойл", "stock":"LKOH",
+            "buy_price":[{"count":"1", "price":"5135"}, {"count":"1", "price":"7538"}]
+        },
+        {"name":"Роснефть", "stock":"ROSN",
+            "buy_price":[{"count":"2", "price":"462.1"}, {"count":"2", "price":"466.6"}, {"count":"3", "price":"543.67"}, 
+                        {"count":"1", "price":"558.75"}, {"count":"1", "price":"590"}, {"count":"1", "price":"584.95"}, 
+                        {"count":"1", "price":"560"}, {"count":"1", "price":"580"}, {"count":"2", "price":"544.45"},
+                        {"count":"1", "price":"477.5"}]
+        },
+        {"name":"Северсталь", "stock":"CHMF",
+            "buy_price":[{"count":"1", "price":"1951.2"}, {"count":"1", "price":"1545"}, {"count":"1", "price":"1279.6"}, 
+                        {"count":"1", "price":"1203.4"}, {"count":"1", "price":"1139"}, {"count":"1", "price":"1017.2"}]
+        },
+        {"name":"Россети Центр", "stock":"MRKC",
+            "buy_price":[{"count":"1000", "price":"0.3882"}, {"count":"1000", "price":"0.458"}]
+        },
+        {"name":"Whoosh", "stock":"WUSH",
+            "buy_price":[{"count":"3", "price":"166.73"}, {"count":"2", "price":"160.65"}, {"count":"2", "price":"131.6"}]
+        },
+        {"name":"АФК Система", "stock":"AFKS",
+            "buy_price":[{"count":"100", "price":"13.753"}]
+        },
+        {"name":"Группа ЛСР", "stock":"LSRG",
+            "buy_price":[{"count":"1", "price":"890"}, {"count":"1", "price":"738.6"}, {"count":"1", "price":"776.6"}]
+        },
+        {"name":"Etalon Group", "stock":"ETLN", 
+            "buy_price":[{"count":"6", "price":"58.78"}, {"count":"2", "price":"64.64"}, {"count":"9", "price":"64.68"}, 
+                        {"count":"1", "price":"68.08"}, {"count":"2", "price":"68"}, {"count":"5", "price":"75.3"}, 
+                        {"count":"3", "price":"76"}, {"count":"10", "price":"78"}, {"count":"5", "price":"43.88"}, 
+                        {"count":"1", "price":"43.66"}]
+        },
+        {"name":"Группа Аренадата", "stock":"DATA",
+            "buy_price":[{"count":"7", "price":"120.4"}, {"count":"4", "price":"120.13"}]
+        },
+        {"name":"Группа Позитив", "stock":"POSI", 
+            "buy_price":[{"count":"1", "price":"2006.4"}]
+        }
+    ],
+    "Crypto":[
+        {"USDT":69}
+    ],
+    "Currency":[
+        {"RUB":"1.88"}
+    ]
+}
