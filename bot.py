@@ -1,7 +1,6 @@
 import telebot
 from telebot import types
-from main import rwControl
-from main import getStock
+from main import rwControl, getStock, getNameFromMOEX
 from valid import Valid
 from config import botToken, dirStocks
 
@@ -81,6 +80,9 @@ def getPriceStock(message, shortName, count, status):
     ccount=count
     file = rwControl(dirStocks)
     data = file.readStocks()
+    if (shortName not in data["tickets"]):
+        data["tickets"].append(shortName)
+        data["Stocks"].append({"name":getNameFromMOEX(shortName), "stock":shortName, "buy_price":[]})
     if status in ("Продажа", "продажа"):
         ccount="-"+ccount
         data["Currency"][0]["RUB"]=str(float(data["Currency"][0]["RUB"])+price*float(count))

@@ -18,6 +18,11 @@ class rwControl:
         with open(self.path, "w", encoding="utf-8") as file:
             json.dump(data, file ,indent=4, ensure_ascii=False)
 
+def getNameFromMOEX(shortName):
+    url=f"https://iss.moex.com/iss/securities/{shortName}.json"
+    req=requests.get(url).json()
+    return req["description"]["data"][2][2]
+
 def getStockPrice(shortName):
     url = f"https://iss.moex.com/iss/engines/stock/markets/shares/securities/{shortName}.json"
     req = requests.get(url).json()
@@ -141,6 +146,7 @@ def getStock():
     text += f"\nСвободные средства: {customRound(data[-1])}"
     return text
 
+# getNameFromMOEX('MAGN')
 
 if __name__ == '__main__':
     main()
