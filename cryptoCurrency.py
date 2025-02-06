@@ -55,11 +55,11 @@ def cryptoCurrencyInfo():
             "total_price_now": total_price_now,
         })
     try:
-        procent_briefcase=((total_price_now-total_price)/total_price)*100
+        procent_briefcase=((price_now_total-total_price)/total_price)*100
     except ZeroDivisionError:
         procent_briefcase=0
-    text += f"\n\nЦена портфеля сейчас: {customRound(total_price_now)}  {customRound(procent_briefcase)}%\nЦена покупки портфеля: {customRound(total_price)}"
-    text += f"\nСвободные средства: {customRound(file.readStocks()["Currency"][1]["USDT"])}"
+    text += f"\n\nЦена портфеля сейчас: {customRound(price_now_total)}  {customRound(procent_briefcase)}%\nЦена покупки портфеля: {customRound(total_price)}"
+    text += f"\nСвободные средства: {customRound(file.readStocks()['Currency'][1]['USDT'])}"
 
     return text
 

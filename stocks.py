@@ -94,7 +94,7 @@ def totalCapital():
         procent_div=0
     text += f"\n\nЦена портфеля сейчас: {customRound(total_price_now)}  {customRound(procent_briefcase)}%\nЦена покупки портфеля: {customRound(stock_prices_total)}"
     text += f"\nДивиденды за {year} год: {customRound(year)}р {customRound(procent_div)}%"
-    text += f"\nСвободные средства: {customRound(file.readStocks()["Currency"][0]["RUB"])}"
+    text += f"\nСвободные средства: {customRound(file.readStocks()['Currency'][0]['RUB'])}"
 
     return text
 
