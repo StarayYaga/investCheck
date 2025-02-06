@@ -1,26 +1,40 @@
 {
-    "tickets":["LKOH"],
+    "tickets": [
+        "LKOH"
+    ],
+    "ticketsCrypto": [
+        "BTC/USDT"
+    ],
     "Stocks": [
         {
-            "name": "Лукойл",
+            "name": "ЛУКОЙЛ",
             "stock": "LKOH",
-            "count": "2",
             "buy_price": [
                 {
-                    "count": "1",
-                    "price": "7000"
+                    "count": 1.0,
+                    "price": 5250.0
                 }
             ]
         }
     ],
     "Crypto": [
         {
-            "USDT": 1000
+            "name": "Bitcoin",
+            "stock": "BTC/USDT",
+            "buy_price": [
+                {
+                    "count": 3e-05,
+                    "price": 94000.0
+                }
+            ]
         }
     ],
     "Currency": [
         {
-            "RUB": "1000"
+            "RUB": -4250.0
+        },
+        {
+            "USDT": 997.18
         }
     ]
 }
