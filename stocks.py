@@ -85,15 +85,15 @@ def totalCapital():
         })
     
     try:
-        procent_briefcase=((total_price_now-stock_prices_total)/stock_prices_total)*100
+        procent_briefcase=((price_now_total-total_price)/total_price)*100
     except ZeroDivisionError:
         procent_briefcase=0
     try:
-        procent_div=(total_divs/total_price_now*100)
+        procent_div=(divs/price_now_total*100)
     except ZeroDivisionError:
         procent_div=0
-    text += f"\n\nЦена портфеля сейчас: {customRound(total_price_now)}  {customRound(procent_briefcase)}%\nЦена покупки портфеля: {customRound(stock_prices_total)}"
-    text += f"\nДивиденды за {year} год: {customRound(year)}р {customRound(procent_div)}%"
+    text += f"\n\nЦена портфеля сейчас: {customRound(price_now_total)}  {customRound(procent_briefcase)}%\nЦена покупки портфеля: {customRound(total_price)}"
+    text += f"\nДивиденды за {year} год: {customRound(divs)}р {customRound(procent_div)}%"
     text += f"\nСвободные средства: {customRound(file.readStocks()['Currency'][0]['RUB'])}"
 
     return text
