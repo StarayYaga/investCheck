@@ -7,7 +7,8 @@ def customRound(data):
     return float("{:.2f}".format(data))
 
 def formatZero(data: float):
-    return '{:.8f}'.format(data).rstrip('.0')
+        return float(data)
+        # return '{:.8f}'.format(data).rstrip(".0")
 
 def getNameFromKucoin(shortName):
     name = shortName.split('/')[0]
@@ -27,7 +28,10 @@ def cryptoCurrencyInfo():
     for currency in currencyes:
         total_currency_count=0
         total_currency_price=0
-        name=currency["stock"]
+        try:
+            name=currency["stock"]
+        except KeyError:
+            continue
         price_now=ccxt.kucoin().fetch_ticker(name)['last']
         prices=currency["buy_price"]
         for price in prices:

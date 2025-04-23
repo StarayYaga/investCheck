@@ -9,26 +9,20 @@ from setup import main as checkFileExist
 
 
 bot = telebot.TeleBot(botToken)
-markup_inline = types.ReplyKeyboardMarkup(resize_keyboard=True)
 valid = Valid(bot=bot)
+
+markup_inline = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
 buy = types.KeyboardButton(text='Покупка')
 helpBtn = types.KeyboardButton(text='/help')
 sell = types.KeyboardButton(text='Продажа')
-buyCrypto = types.KeyboardButton(text='Покупка крипта')
-sellCrypto  = types.KeyboardButton(text='Продажа крипта')
 refill_btn = types.KeyboardButton(text='/refill')
 stocks_btn = types.KeyboardButton(text='/stocks')
 spending_btn = types.KeyboardButton(text='/spending')
-refillCrypto_btn = types.KeyboardButton(text='/refillCrypto')
-spendingCrypto_btn = types.KeyboardButton(text='/spendingCrypto')
 
 markup_inline.add(buy, sell)
-markup_inline.add(buyCrypto, sellCrypto)
 markup_inline.add(stocks_btn, helpBtn)
 markup_inline.add(refill_btn, spending_btn)
-markup_inline.add(refillCrypto_btn, spendingCrypto_btn)
-
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -105,73 +99,76 @@ def getSpendingCrypto(message):
 @bot.message_handler(content_types=["text"])
 @valid.official
 def handle_text(message):
-    try:
-        status, cryptoStatus = message.text.split(" ")
-    except ValueError:
-        status= message.text
-        cryptoStatus=None
+    status=message.text
     if status not in ("Покупка", "Продажа","покупка", "продажа"):
         return 
+
+    types_stocks=types.InlineKeyboardMarkup()
+    crypto=types.InlineKeyboardButton(text="Криптовалюта", callback_data='currency_Crypto_'+status)
+    stock=types.InlineKeyboardButton(text="Акции", callback_data='currency_Stocks_'+status)
+    bond=types.InlineKeyboardButton(text="Облигации", callback_data='currency_Bonds_'+status)
+    metal=types.InlineKeyboardButton(text="Металлы", callback_data='currency_Metals_'+status)
+    types_stocks.row(crypto, stock).add(bond, metal)
     
-    bot.send_message(message.chat.id, "Введите тикет (короткое название) компании:")
-    bot.register_next_step_handler(message, getShortName, status, cryptoStatus)
-def getShortName(message, status, cryptoStatus):
-    if status not in ("Покупка", "Продажа","покупка", "продажа", "cnjg", "Cnjg"):
-        bot.send_message(message.chat.id, "Отмена!")
-        return
+    bot.send_message(message.chat.id, "Выберите тип актива для действия:", reply_markup=types_stocks)
+
+#call of button
+@bot.callback_query_handler(func=lambda call: True)
+def step2(call):
+    assetType=call.data.split("_")[1]
+    action=call.data.split("_")[2]
+    bot.send_message(call.message.chat.id, "Введите тикет (короткое название) компании:")
+    if call.data.split("_")[0]=="currency":
+        message = call.message
+        bot.register_next_step_handler(message, getTicket, assetType, action)
+def getTicket(message, assetType, action):
     shortName=message.text
     if shortName.isupper()!=True:
         shortName=shortName.upper()
     bot.send_message(message.chat.id, "Введите количество:")
-    bot.register_next_step_handler(message, getCountStock, shortName, status, cryptoStatus)
-def getCountStock(message, shortName, status, cryptoStatus):
-    if status not in ("Покупка", "Продажа","покупка", "продажа", "cnjg", "Cnjg"):
-        bot.send_message(message.chat.id, "Отмена!")
-        return
+    bot.register_next_step_handler(message, getCountStock, shortName, assetType, action)
+def getCountStock(message, shortName, assetType, action):
     count=float(message.text)
     bot.send_message(message.chat.id, "Введите цену:")
-    bot.register_next_step_handler(message, getPriceStock, shortName, count, status, cryptoStatus)
-def getPriceStock(message, shortName, count, status, cryptoStatus):
-    if status not in ("Покупка", "Продажа","покупка", "продажа", "cnjg", "Cnjg"):
-        bot.send_message(message.chat.id, "Отмена!")
-        return
+    bot.register_next_step_handler(message, getPriceStock, shortName, count, assetType, action)
+def getPriceStock(message, shortName, count, assetType, action):
     price=float(message.text)
     ccount=count
     file = rwControler(dirStocks)
     data = file.readStocks()
-    if (cryptoStatus!="крипта" and shortName not in data["tickets"]):
-        data["tickets"].append(shortName)
-        data["Stocks"].append({"name":getNameFromMOEX(shortName), "stock":shortName, "buy_price":[]})
-    if (cryptoStatus=="крипта" and shortName not in data["ticketsCrypto"]):
-        data["ticketsCrypto"].append(shortName)
-        data["Crypto"].append({"name":getNameFromKucoin(shortName), "stock":shortName, "buy_price":[]})
-    if status in ("Продажа", "продажа"):
-        ccount=float("-"+str(ccount))
-        if (cryptoStatus == 'крипта'):
-            data["Currency"][1]["USDT"]=float(data["Currency"][1]["USDT"])+price*count
-        else:
+    
+    if assetType != "Crypto":
+        if shortName not in data["tickets"]:
+            data["tickets"].append(shortName)
+            data[assetType].append({"name":getNameFromMOEX(shortName), "stock":shortName, "buy_price":[]})            
+        if action in ("Продажа", "продажа"):
+            ccount=float("-"+str(ccount))
             data["Currency"][0]["RUB"]=float(data["Currency"][0]["RUB"])+price*count
-    else:
-        if (cryptoStatus == 'крипта'):
-            data["Currency"][1]["USDT"]=float(data["Currency"][1]["USDT"])-price*count
         else:
             data["Currency"][0]["RUB"]=float(data["Currency"][0]["RUB"])-price*count
-
-    if (cryptoStatus != 'крипта'):
-        for stock in data["Stocks"]:
+        
+        for stock in data[assetType]:
             if stock["stock"]==shortName:
-                index=data["Stocks"].index(stock)
-                buy_list = data["Stocks"][index]["buy_price"]
+                index=data[assetType].index(stock)
+                buy_list = data[assetType][index]["buy_price"]
                 buy_list.append({"count":ccount, "price":price})
                 all_count_stock=0
                 for item in buy_list:
                     all_count_stock+=item["count"]
                 if all_count_stock==0:
-                    data["Stocks"].pop(index)
-                    data["tickets"].remove(shortName)
-        bot.send_message(message.chat.id, status+" : "+shortName+" - "+str(formatZero(count))+" шт по  "+str(formatZero(price))+f'\nОстаток на счёте: {data["Currency"][0]["RUB"]}р', parse_mode= 'Markdown', reply_markup=markup_inline)
+                    data[assetType].pop(index)
+                    data["tickets"].remove(shortName)   
+        text=f"{action} : {shortName} - {str(formatZero(count))} шт по {str(formatZero(price))}\nОстаток на счёте: {data['Currency'][0]['RUB']}р"
         
     else:
+        if shortName not in data["ticketsCrypto"]:
+            data["ticketsCrypto"].append(shortName)
+            data["Crypto"].append({"name":getNameFromKucoin(shortName), "stock":shortName, "buy_price":[]})
+        if action in ("Продажа", "продажа"):
+            ccount=float("-"+str(ccount))
+            data["Currency"][1]["USDT"]=float(data["Currency"][1]["USDT"])+price*count
+        else:
+            data["Currency"][1]["USDT"]=float(data["Currency"][1]["USDT"])-price*count
         for stock in data["Crypto"]:
             if stock["stock"]==shortName:
                 index=data["Crypto"].index(stock)
@@ -183,9 +180,9 @@ def getPriceStock(message, shortName, count, status, cryptoStatus):
                 if all_count_stock==0:
                     data["Crypto"].pop(index)
                     data["ticketsCrypto"].remove(shortName)
-        bot.send_message(message.chat.id, status+" : "+shortName+" - "+str(formatZero(count))+" шт по  "+str(formatZero(price))+f'\nОстаток на счёте: ${data["Currency"][1]["USDT"]}', parse_mode= 'Markdown', reply_markup=markup_inline)
+        text=f"{action} : {shortName} - {str(formatZero(count))} шт по {str(formatZero(price))}\nОстаток на счёте: {data['Currency'][1]['USDT']}р"
     
-    
+    bot.send_message(message.chat.id, text, reply_markup=markup_inline)
     file.writeStocks(data)
 
 def main():

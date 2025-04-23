@@ -1,14 +1,16 @@
 from config import dirStocks
 import os
-import json
 
 
 def main():
     data = '''{
-    "tickets":[""],
+    "tickets":[],
+    "ticketsCrypto":[],
     "Stocks": [],
-    "Crypto": [{"USDT": 0}],
-    "Currency": [{"RUB": "0"}]
+    "Crypto": [],
+    "Currency": [{"RUB": "0"}, {"USDT": 0}],
+    "Metals":[],
+    "Bonds":[]
 }'''
     if os.path.exists(dirStocks)==False:
         with open(dirStocks, "wt", encoding="utf-8") as file:
