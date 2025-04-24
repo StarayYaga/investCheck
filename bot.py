@@ -123,15 +123,24 @@ def step2(call):
         bot.register_next_step_handler(message, getTicket, assetType, action)
 def getTicket(message, assetType, action):
     shortName=message.text
+    if shortName in ("Стоп", "стоп", "cnjp", "Cnjp", "Ыещз", "Ыещз", "Stop", "stop"):
+        bot.send_message(message.chat.id, "СТОП!")
+        return
     if shortName.isupper()!=True:
         shortName=shortName.upper()
     bot.send_message(message.chat.id, "Введите количество:")
     bot.register_next_step_handler(message, getCountStock, shortName, assetType, action)
 def getCountStock(message, shortName, assetType, action):
+    if message.text in ("Стоп", "стоп", "cnjp", "Cnjp", "Ыещз", "Ыещз", "Stop", "stop"):
+        bot.send_message(message.chat.id, "СТОП!")
+        return
     count=float(message.text)
     bot.send_message(message.chat.id, "Введите цену:")
     bot.register_next_step_handler(message, getPriceStock, shortName, count, assetType, action)
 def getPriceStock(message, shortName, count, assetType, action):
+    if message.text in ("Стоп", "стоп", "cnjp", "Cnjp", "Ыещз", "Ыещз", "Stop", "stop"):
+        bot.send_message(message.chat.id, "СТОП!")
+        return
     price=float(message.text)
     ccount=count
     file = rwControler(dirStocks)

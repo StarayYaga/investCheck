@@ -43,6 +43,8 @@ def getStockPrice(shortName, assetType):
             time.sleep(1000)
             req = requests.get(url).json()
         data=req["marketdata"]["data"][0][8]
+        if data==None:
+            data=req["securities"]["data"][0][14]
         return float(data)
 
 
