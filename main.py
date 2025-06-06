@@ -1,9 +1,9 @@
 import requests
 import schedule
 import time
-from config import channelId, botToken, ownerId
+from config import channelId, botToken, ownerId, crypto
 from setup import main as checkFileExist
-from stocks import totalCapital
+from stock import totalCapital
 from cryptoCurrency import cryptoCurrencyInfo
 
 def send_text(text, chat, token):
@@ -16,10 +16,14 @@ def send_text(text, chat, token):
 
 
 def main():
-    send_text(totalCapital(), ownerId, botToken)
-    send_text(cryptoCurrencyInfo(), ownerId, botToken)
-    send_text(totalCapital(), channelId, botToken)
-    send_text(cryptoCurrencyInfo(), channelId, botToken)
+    capital= totalCapital()
+    send_text(capital, ownerId, botToken)
+    send_text(capital, channelId, botToken)
+    if crypto:
+        cryptoInfo=cryptoCurrencyInfo()
+        send_text(cryptoInfo, ownerId, botToken)
+        send_text(cryptoInfo, channelId, botToken)
+
 
 
 if __name__ == '__main__':

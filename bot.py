@@ -1,10 +1,10 @@
 import telebot
 from telebot import types
-from stocks import getNameFromMOEX, totalCapital
+from stock import getNameFromMOEX, totalCapital
 from cryptoCurrency import getNameFromKucoin, cryptoCurrencyInfo, formatZero
 from rwControl import rwControler
 from valid import Valid
-from config import botToken, dirStocks
+from config import botToken, dirStocks, crypto
 from setup import main as checkFileExist
 
 
@@ -36,10 +36,11 @@ def start(message):
 @valid.official
 def getStocks(message):
     bot.send_message(message.chat.id, totalCapital())
-    try:
-        bot.send_message(message.chat.id, cryptoCurrencyInfo())
-    except telebot.apihelper.ApiTelegramException:
-        pass
+    if crypto:
+        try:
+            bot.send_message(message.chat.id, cryptoCurrencyInfo())
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
 @bot.message_handler(commands=['refill'])
 @valid.official
