@@ -13,6 +13,8 @@ def main():
     "Bonds":[]
 }'''
     if os.path.exists(dirStocks)==False:
+        if "data" not in  os.listdir(path="."):
+            os.mkdir("data")
         with open(dirStocks, "wt", encoding="utf-8") as file:
             file.write(data)
 

@@ -21,14 +21,17 @@ def customRound(data):
 def totalCapital():
     file = rwControler(dirStocks)
     year = int(str(datetime.date.today()).split('-')[0])
+    mounth= int(str(datetime.date.today()).split('-')[1])
     text=f"Состав портфеля\n\n"
     price_of_capital=0
     price_of_capital_now=0
     dividends=0
     for asssetType in ("Stocks", "Metals", "Bonds"):
         stocks = file.readStocks()[asssetType]
+        if len(stocks) == 0:
+            continue
         if asssetType=="Stocks":
-            text+=f"Акции:\n"
+            text+=f"Акции:\n\n"
             for asset in stocks:
                 last_price, total_divs, start_price, count=getStockInfo(asset, year)
                 price_of_capital+=start_price*count
@@ -37,7 +40,7 @@ def totalCapital():
                 profit_in_procent=customRound(((last_price-start_price)/start_price)*100)
                 text+=f'{asset["name"]} : {asset["stock"]}   Профит: {profit_in_procent}%\nЦена: {last_price}   Кол-во: {count}\n======================\n\n'
         if asssetType=="Metals":
-            text+=f"Драгоценные металлы:\n"
+            text+=f"Драгоценные металлы:\n\n"
             for asset in stocks:
                 last_price, start_price, count=getMetallInfo(asset)
                 price_of_capital+=start_price*count
@@ -45,16 +48,15 @@ def totalCapital():
                 profit_in_procent=customRound(((last_price-start_price)/start_price)*100)
                 text+=f'{asset["name"]} : {asset["stock"]}   Профит: {profit_in_procent}%\nЦена: {last_price}   Кол-во: {count}\n======================\n\n'
         if asssetType=="Bonds":
-            text+=f"Облигации:\n"
+            text+=f"Облигации:\n\n"
             for asset in stocks:
                 last_price, total_coupon, start_price, count=getBondInfo(asset)
                 price_of_capital+=start_price*count
                 price_of_capital_now+=last_price*count
-                dividends+=total_coupon*count
+                dividends+=total_coupon*count*mounth
                 profit_in_procent=customRound(((last_price-start_price)/start_price)*100)
                 text+=f'{asset["name"]} : {asset["stock"]}   Профит: {profit_in_procent}%\nЦена: {last_price}   Кол-во: {count}\n======================\n\n'
     
-
     try:
         procent_briefcase=((price_of_capital_now-price_of_capital)/price_of_capital)*100
     except ZeroDivisionError:

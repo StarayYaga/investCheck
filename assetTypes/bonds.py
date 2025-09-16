@@ -22,10 +22,8 @@ def getBondInfo(data):
     last_price=req["marketdata"]["data"][-1][11]
     if last_price==None:
         last_price=req["securities"]["data"][-1][3]
-    print(last_price)
     last_price = last_price*10
 
-    total_coupon=req["securities"]["data"][0][5]*2
-    print([last_price, total_coupon, start_price, count])
+    total_coupon=req["securities"]["data"][0][5]
     return [last_price, total_coupon, start_price, count]
 
