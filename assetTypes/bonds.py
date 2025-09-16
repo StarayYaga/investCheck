@@ -6,7 +6,7 @@ def getBondInfo(data):
     start_price=0
     count=0
     last_price=0
-    url=f"https://iss.moex.com/iss/engines/stock/markets/bonds/securities/{data["stock"]}.json"
+    url=f"https://iss.moex.com/iss/engines/stock/markets/bonds/securities/{data['stock']}.json"
     try:
         req = requests.get(url).json()
     except requests.exceptions.SSLError:
