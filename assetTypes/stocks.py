@@ -7,8 +7,8 @@ def getStockInfo(data,year):
     start_price=0
     count=0
     last_price=0
-    stock_url=f"https://iss.moex.com/iss/engines/stock/markets/shares/securities/{data["stock"]}.json"
-    dividend_url = f"https://iss.moex.com/iss/securities/{data["stock"]}/dividends.json"
+    stock_url=f"https://iss.moex.com/iss/engines/stock/markets/shares/securities/{data['stock']}.json"
+    dividend_url = f"https://iss.moex.com/iss/securities/{data['stock']}/dividends.json"
 
     try:
         stock_req = requests.get(stock_url).json()
