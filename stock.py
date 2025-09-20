@@ -50,10 +50,10 @@ def totalCapital():
         if asssetType=="Bonds":
             text+=f"Облигации:\n\n"
             for asset in stocks:
-                last_price, total_coupon, start_price, count=getBondInfo(asset)
+                last_price, total_coupon, start_price, count, COUPONFREQUENCY=getBondInfo(asset)
                 price_of_capital+=start_price*count
                 price_of_capital_now+=last_price*count
-                dividends+=total_coupon*count*mounth
+                dividends+=total_coupon*count*COUPONFREQUENCY
                 profit_in_procent=customRound(((last_price-start_price)/start_price)*100)
                 text+=f'{asset["name"]} : {asset["stock"]}   Профит: {profit_in_procent}%\nЦена: {last_price}   Кол-во: {count}\n======================\n\n'
     
