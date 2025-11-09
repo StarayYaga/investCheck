@@ -1,5 +1,6 @@
 import requests
 import time
+from assetTypes.sql_module import main as db
 
 def getMetallInfo(data):
     start_price=0
@@ -22,5 +23,5 @@ def getMetallInfo(data):
     
     start_price=start_price/count
 
-
+    db(data['stock'], last_price)
     return [last_price, start_price, count]

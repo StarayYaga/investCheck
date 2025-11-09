@@ -1,5 +1,6 @@
 import requests
 import time
+from assetTypes.sql_module import main as db
 
 def getBondInfo(data):
     total_coupon=0
@@ -35,5 +36,6 @@ def getBondInfo(data):
     for info in req["description"]["data"]:
         if info[0]=="COUPONFREQUENCY":
             COUPONFREQUENCY=int(info[2])
+    db(data['stock'], last_price)
     return [last_price, total_coupon, start_price, count, COUPONFREQUENCY]
 

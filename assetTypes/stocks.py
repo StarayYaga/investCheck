@@ -1,6 +1,7 @@
 import requests
 import time
 import datetime
+from assetTypes.sql_module import main as db 
 
 def getStockInfo(data,year):
     total_divs=0
@@ -37,5 +38,5 @@ def getStockInfo(data,year):
     if last_price==None:
         last_price=stock_req["securities"]["data"][-1][3]
 
-
+    db(data['stock'], last_price)
     return [last_price, total_divs, start_price, count]
