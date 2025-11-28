@@ -19,16 +19,17 @@ sell = types.KeyboardButton(text='Продажа')
 refill_btn = types.KeyboardButton(text='/refill')
 stocks_btn = types.KeyboardButton(text='/stocks')
 spending_btn = types.KeyboardButton(text='/spending')
+payment_btn = types.KeyboardButton(text='/payments')
 
 markup_inline.add(buy, sell)
 markup_inline.add(stocks_btn, helpBtn)
-markup_inline.add(refill_btn, spending_btn)
+markup_inline.add(refill_btn, payment_btn, spending_btn)
 
 
 @bot.message_handler(commands=['start', 'help'])
 @valid.official
 def start(message):
-    text="/stocks - показать текущее состояние портфеля\n/refill - пополнение\n/spending - трата (коммиссия, налоги, снять со счёта)"
+    text="/stocks - показать текущее состояние портфеля\n/refill - пополнение\n/payments - выплаты купонов, дивидендов\n/spending - трата (коммиссия, налоги, снять со счёта)"
     bot.send_message(message.chat.id, text, parse_mode= 'Markdown', reply_markup=markup_inline)
 
 
@@ -43,6 +44,20 @@ def getStocks(message):
             pass
 
 @bot.message_handler(commands=['refill'])
+@valid.official
+def getЗayments(message):
+    bot.send_message(message.chat.id, "Введите сумму пополнения")
+    bot.register_next_step_handler(message, getRefilling)
+def getЗaymentsing(message):
+    money=float(message.text)
+    file = rwControler(dirStocks)
+    data = file.readStocks()
+    data["Currency"][0]["RUB"]=float(data["Currency"][0]["RUB"])+money
+    data["replenishments"]=float(data["replenishments"])+money
+    bot.send_message(message.chat.id, "Свободные средства: "+str(data["Currency"][0]["RUB"]))
+    file.writeStocks(data)
+
+@bot.message_handler(commands=['payments'])
 @valid.official
 def getRefill(message):
     bot.send_message(message.chat.id, "Введите сумму пополнения")

@@ -1,10 +1,11 @@
 import sqlite3 as sql
-import datetime 
+import time
+from config import dirDB
 
 
 def main(short_name, price):
-    time = datetime.datetime.now().strftime("%s")
-    with sql.connect("weather_history.db") as connect:
+    time_now = int(time.time())
+    with sql.connect(dirDB) as connect:
             cursor = connect.cursor()
 
             # cursor.execute("""DROP TABLE IF EXISTS data""")
@@ -18,4 +19,4 @@ def main(short_name, price):
 
             cursor.execute("""
 INSERT INTO data (date, short_name, price) VALUES (?, ?, ?)    
-    """, (time, short_name, price))
+    """, (time_now, short_name, price))

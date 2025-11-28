@@ -172,3 +172,4 @@ cython_debug/
 data/stocks_copy.json
 data/stocks.json
 config.py
+stocks_history.db
