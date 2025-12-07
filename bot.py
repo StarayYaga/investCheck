@@ -45,15 +45,14 @@ def getStocks(message):
 
 @bot.message_handler(commands=['refill'])
 @valid.official
-def getЗayments(message):
+def getPayments(message):
     bot.send_message(message.chat.id, "Введите сумму пополнения")
     bot.register_next_step_handler(message, getRefilling)
-def getЗaymentsing(message):
+def getPaymentsing(message):
     money=float(message.text)
     file = rwControler(dirStocks)
     data = file.readStocks()
     data["Currency"][0]["RUB"]=float(data["Currency"][0]["RUB"])+money
-    data["replenishments"]=float(data["replenishments"])+money
     bot.send_message(message.chat.id, "Свободные средства: "+str(data["Currency"][0]["RUB"]))
     file.writeStocks(data)
 
@@ -66,6 +65,7 @@ def getRefilling(message):
     money=float(message.text)
     file = rwControler(dirStocks)
     data = file.readStocks()
+    data["replenishments"]=float(data["replenishments"])+money
     data["Currency"][0]["RUB"]=float(data["Currency"][0]["RUB"])+money
     bot.send_message(message.chat.id, "Свободные средства: "+str(data["Currency"][0]["RUB"]))
     file.writeStocks(data)
