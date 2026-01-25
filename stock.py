@@ -66,11 +66,11 @@ def totalCapital():
         procent_div=0
     text += f"\n\nЦена портфеля сейчас: {customRound(price_of_capital_now)} рублей / {customRound(procent_briefcase)}%."
     text += f"\nЦена покупки портфеля: {customRound(price_of_capital)} рублей."
-    text += f"\nДоход портфеля: {customRound(price_of_capital-file.readStocks()['replenishments'])} рублей."
+    text += f"\nПополнения портфеля: {customRound(file.readStocks()['replenishments'])} рублей."
+    text += f"\nДоход портфеля: {customRound(price_of_capital_now-file.readStocks()['replenishments'])} рублей."
     text += f"\nДивиденды и купоны за {year} год: {customRound(dividends)}р {customRound(procent_div)}%."
     text += f"\nПотенциальный размер пенсии: {customRound(dividends/12)} рублей."
     text += f"\nСвободные средства: {customRound(file.readStocks()['Currency'][0]['RUB'])}."
-
     return text
 
 if __name__ == "__main__":

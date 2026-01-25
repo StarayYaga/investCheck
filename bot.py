@@ -42,8 +42,8 @@ def getStocks(message):
             bot.send_message(message.chat.id, cryptoCurrencyInfo())
         except telebot.apihelper.ApiTelegramException:
             pass
-
-@bot.message_handler(commands=['refill'])
+        
+@bot.message_handler(commands=['payments'])
 @valid.official
 def getPayments(message):
     bot.send_message(message.chat.id, "Введите сумму пополнения")
@@ -56,7 +56,7 @@ def getPaymentsing(message):
     bot.send_message(message.chat.id, "Свободные средства: "+str(data["Currency"][0]["RUB"]))
     file.writeStocks(data)
 
-@bot.message_handler(commands=['payments'])
+@bot.message_handler(commands=['refill'])
 @valid.official
 def getRefill(message):
     bot.send_message(message.chat.id, "Введите сумму пополнения")
